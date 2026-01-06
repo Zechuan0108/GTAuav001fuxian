@@ -1,0 +1,30 @@
+training save in path: ./work_dir/gta/vit_base_patch16_rope_reg1_gap_256.sbb_in1k/1028144559
+training start from None
+
+Model: vit_base_patch16_rope_reg1_gap_256.sbb_in1k
+{'input_size': (3, 256, 256), 'interpolation': 'bicubic', 'mean': (0.5, 0.5, 0.5), 'std': (0.5, 0.5, 0.5), 'crop_pct': 0.95, 'crop_mode': 'center'}
+Freeze model layers: False [0, 0, 0, 0]
+GPUs available: 8
+
+Image Size Query: (384, 384)
+Image Size Ground: (384, 384)
+Mean: (0.5, 0.5, 0.5)
+Std:  (0.5, 0.5, 0.5)
+
+Use custom sampling: True
+Query Images Test: 9067
+Gallery Images Test: 14640
+Train with weight? True k= 5.0
+
+Scheduler: cosine - max LR: 0.0001
+Warmup Epochs: 0.1 - Warmup Steps: 358.5
+Train Epochs:  5 - Train Steps:  17925
+
+------------------------------[Epoch: 1]------------------------------
+
+Shuffle Dataset:
+Original Length: 71686 - Length after Shuffle: 70840
+Break Counter: 16384
+Pairs left out of last batch to avoid creating noise: 846
+First Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/100_0001_0000005334.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/500_0001_0000024416.png
+First Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/6_0_8_32.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/5_0_9_22.png

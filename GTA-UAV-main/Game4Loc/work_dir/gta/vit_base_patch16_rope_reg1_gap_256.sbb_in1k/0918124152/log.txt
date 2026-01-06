@@ -1,0 +1,14 @@
+training save in path: ./work_dir/gta/vit_base_patch16_rope_reg1_gap_256.sbb_in1k/0918124152
+training start from None
+
+Model: vit_base_patch16_rope_reg1_gap_256.sbb_in1k
+{'input_size': (3, 256, 256), 'interpolation': 'bicubic', 'mean': (0.5, 0.5, 0.5), 'std': (0.5, 0.5, 0.5), 'crop_pct': 0.95, 'crop_mode': 'center'}
+Freeze model layers: False [0, 0, 0, 0]
+GPUs available: 8
+
+Image Size Query: (384, 384)
+Image Size Ground: (384, 384)
+Mean: (0.5, 0.5, 0.5)
+Std:  (0.5, 0.5, 0.5)
+
+Use custom sampling: True

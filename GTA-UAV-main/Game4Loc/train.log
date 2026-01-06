@@ -1,0 +1,69 @@
+nohup: ignoring input
+/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/game4loc/matcher/networks/lightglue/models/matchers/lightglue.py:21: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  @torch.cuda.amp.custom_fwd(cast_inputs=torch.float32)
+/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/train_gta.py:304: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler(init_scale=2.**10)
+training save in path: ./work_dir/gta/vit_base_patch16_rope_reg1_gap_256.sbb_in1k/1028135300
+training start from None
+
+Model: vit_base_patch16_rope_reg1_gap_256.sbb_in1k
+{'input_size': (3, 256, 256), 'interpolation': 'bicubic', 'mean': (0.5, 0.5, 0.5), 'std': (0.5, 0.5, 0.5), 'crop_pct': 0.95, 'crop_mode': 'center'}
+Freeze model layers: False [0, 0, 0, 0]
+GPUs available: 8
+
+Image Size Query: (384, 384)
+Image Size Ground: (384, 384)
+Mean: (0.5, 0.5, 0.5)
+Std:  (0.5, 0.5, 0.5)
+
+Use custom sampling: True
+Query Images Test: 9067
+Gallery Images Test: 14640
+Train with weight? True k= 5.0
+
+Scheduler: cosine - max LR: 0.0001
+Warmup Epochs: 0.1 - Warmup Steps: 358.5
+Train Epochs:  5 - Train Steps:  17925
+
+------------------------------[Epoch: 1]------------------------------
+
+Shuffle Dataset:
+Original Length: 71686 - Length after Shuffle: 70840
+Break Counter: 16384
+Pairs left out of last batch to avoid creating noise: 846
+First Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/100_0001_0000005334.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/500_0001_0000024416.png
+First Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/6_0_8_32.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/5_0_9_22.png
+Traceback (most recent call last):
+  File "/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/train_gta.py", line 545, in <module>
+    train_script(config)
+  File "/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/train_gta.py", line 398, in train_script
+    train_loss = train_with_weight(config,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/game4loc/trainer/trainer.py", line 33, in train_with_weight
+    for query, reference, weight in bar:
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 732, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1506, in _next_data
+    return self._process_data(data, worker_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1541, in _process_data
+    data.reraise()
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/_utils.py", line 769, in reraise
+    raise exception
+AttributeError: Caught AttributeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/_utils/worker.py", line 349, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jcx/anaconda3/envs/GTA1017/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 52, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/data3/jcx_code/test9.18/GTA-UAV-main/Game4Loc/game4loc/dataset/gta.py", line 129, in __getitem__
+    if self.transforms_bev is not None:
+       ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GTADatasetTrain' object has no attribute 'transforms_bev'
+

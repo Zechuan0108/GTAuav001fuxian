@@ -1,0 +1,48 @@
+training save in path: ./work_dir/gta/vit_base_patch16_rope_reg1_gap_256.sbb_in1k/0918132718
+training start from None
+
+Model: vit_base_patch16_rope_reg1_gap_256.sbb_in1k
+{'input_size': (3, 256, 256), 'interpolation': 'bicubic', 'mean': (0.5, 0.5, 0.5), 'std': (0.5, 0.5, 0.5), 'crop_pct': 0.95, 'crop_mode': 'center'}
+Freeze model layers: False [0, 0, 0, 0]
+GPUs available: 8
+
+Image Size Query: (384, 384)
+Image Size Ground: (384, 384)
+Mean: (0.5, 0.5, 0.5)
+Std:  (0.5, 0.5, 0.5)
+
+Use custom sampling: True
+Query Images Test: 9067
+Gallery Images Test: 14640
+Train with weight? True k= 5.0
+
+Scheduler: cosine - max LR: 0.0001
+Warmup Epochs: 0.1 - Warmup Steps: 358.5
+Train Epochs:  5 - Train Steps:  17925
+
+------------------------------[Zero Shot]------------------------------
+Extract Features and Compute Scores:
+Recall@1: 9.5291 - Recall@5: 22.5984 - Recall@10: 29.1717 - Recall@top1: 65.3027 - AP: 15.9492 - SDM@1: 0.3602 - SDM@3: 0.3367 - SDM@5: 0.3213 - Dis@1: 1853.0259 - Dis@3: 1952.7982 - Dis@5: 2017.3809
+
+------------------------------[Epoch: 1]------------------------------
+
+Shuffle Dataset:
+Original Length: 71686 - Length after Shuffle: 70840
+Break Counter: 16384
+Pairs left out of last batch to avoid creating noise: 846
+First Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/100_0001_0000005334.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/drone/images/500_0001_0000024416.png
+First Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/6_0_8_32.png - Last Element: /data3/czh_code/gta/GTA-UAV-LR/satellite/5_0_9_22.png
+Iteration 1/3542 took 1.3575 s, ETA: 7884.17 s, loss: 2.3368, loss_avg: ('2.3368',), lr: 0.000000, contrastive: 2.3368, 
+Iteration 51/3542 took 0.2454 s, ETA: 1050.30 s, loss: 2.1124, loss_avg: ('2.5015',), lr: 0.000014, contrastive: 2.1124, 
+Iteration 101/3542 took 0.2793 s, ETA: 973.92 s, loss: 1.7624, loss_avg: ('2.2662',), lr: 0.000028, contrastive: 1.7624, 
+Iteration 151/3542 took 0.2840 s, ETA: 958.75 s, loss: 1.7695, loss_avg: ('2.1198',), lr: 0.000042, contrastive: 1.7695, 
+Iteration 201/3542 took 0.2618 s, ETA: 944.67 s, loss: 1.7532, loss_avg: ('2.0302',), lr: 0.000056, contrastive: 1.7532, 
+Iteration 251/3542 took 0.3063 s, ETA: 927.18 s, loss: 1.7470, loss_avg: ('1.9570',), lr: 0.000070, contrastive: 1.7470, 
+Iteration 301/3542 took 0.2958 s, ETA: 928.25 s, loss: 1.5962, loss_avg: ('1.9016',), lr: 0.000084, contrastive: 1.5962, 
+Iteration 351/3542 took 0.2776 s, ETA: 909.20 s, loss: 1.6498, loss_avg: ('1.8609',), lr: 0.000098, contrastive: 1.6498, 
+Iteration 401/3542 took 0.2791 s, ETA: 895.14 s, loss: 1.6094, loss_avg: ('1.8252',), lr: 0.000100, contrastive: 1.6094, 
+Iteration 451/3542 took 0.2816 s, ETA: 880.67 s, loss: 1.5756, loss_avg: ('1.7939',), lr: 0.000100, contrastive: 1.5756, 
+Iteration 501/3542 took 0.2670 s, ETA: 865.65 s, loss: 1.4222, loss_avg: ('1.7669',), lr: 0.000100, contrastive: 1.4222, 
+Iteration 551/3542 took 0.2777 s, ETA: 854.06 s, loss: 1.4531, loss_avg: ('1.7432',), lr: 0.000100, contrastive: 1.4531, 
+Iteration 601/3542 took 0.2795 s, ETA: 838.26 s, loss: 1.6271, loss_avg: ('1.7242',), lr: 0.000100, contrastive: 1.6271, 
+Iteration 651/3542 took 0.2707 s, ETA: 822.75 s, loss: 1.6134, loss_avg: ('1.7062',), lr: 0.000100, contrastive: 1.6134, 
