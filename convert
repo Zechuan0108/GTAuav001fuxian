@@ -1,0 +1,140 @@
+import cv2
+import numpy as np
+
+
+def correct_tilted_image(image, pitch_angle=5, roll_angle=0, focal_length=None, sensor_size=None, enhance=True):
+    """
+    将倾斜摄影图像矫正为垂直摄影图像 - 融合增强版本
+
+    参数:
+        image: 原始倾斜图像 (numpy数组)
+        pitch_angle: 俯仰角 (度)
+        roll_angle: 滚转角 (度, 默认为0)
+        focal_length: 相机焦距 (毫米)
+        sensor_size: 传感器尺寸 (宽, 高) 毫米
+        enhance: 是否进行图像增强 (默认为True)
+
+    返回:
+        矫正后的垂直图像
+    """
+    # 参数设置
+    if focal_length is None:
+        focal_length = 35  # 默认焦距35mm
+    if sensor_size is None:
+        sensor_size = (36, 24)  # 默认全画幅传感器尺寸
+
+    # 角度转换
+    pitch_rad = np.radians(pitch_angle)
+    roll_rad = np.radians(roll_angle)
+    h, w = image.shape[:2]
+
+    # 改进的视场角计算
+    fov_x = 2 * np.arctan2(sensor_size[0], 2 * focal_length)
+    fov_y = 2 * np.arctan2(sensor_size[1], 2 * focal_length)
+
+    # 完整的旋转矩阵
+    Rx = np.array([
+        [1, 0, 0],
+        [0, np.cos(pitch_rad), -np.sin(pitch_rad)],
+        [0, np.sin(pitch_rad), np.cos(pitch_rad)]
+    ])
+
+    Ry = np.array([
+        [np.cos(roll_rad), 0, np.sin(roll_rad)],
+        [0, 1, 0],
+        [-np.sin(roll_rad), 0, np.cos(roll_rad)]
+    ])
+
+    # 组合旋转矩阵：先滚转后俯仰
+    rotation_matrix = np.dot(Rx, Ry)
+
+    # 使用密集采样点提高精度
+    grid_size = 12  # 12x12网格
+    dst_points = []
+    src_points = []
+
+    for i in range(grid_size + 1):
+        for j in range(grid_size + 1):
+            x = w * i / grid_size
+            y = h * j / grid_size
+            dst_points.append([x, y])
+
+            # 将2D点转换为归一化设备坐标
+            x_ndc = (x - w / 2) / (w / 2) * np.tan(fov_x / 2)
+            y_ndc = (y - h / 2) / (h / 2) * np.tan(fov_y / 2)
+            z_ndc = 1.0
+
+            # 应用旋转
+            point_3d = np.array([x_ndc, y_ndc, z_ndc])
+            rotated = np.dot(rotation_matrix, point_3d)
+
+            # 透视除法并投影回2D
+            if abs(rotated[2]) > 1e-6:  # 避免除以零
+                x_proj = rotated[0] / rotated[2]
+                y_proj = rotated[1] / rotated[2]
+
+                # 转换回像素坐标
+                x_pixel = (x_proj / np.tan(fov_x / 2)) * (w / 2) + w / 2
+                y_pixel = (y_proj / np.tan(fov_y / 2)) * (h / 2) + h / 2
+                src_points.append([x_pixel, y_pixel])
+            else:
+                src_points.append([x, y])
+
+    dst_points = np.array(dst_points, dtype=np.float32)
+    src_points = np.array(src_points, dtype=np.float32)
+
+    # 使用RANSAC计算更鲁棒的变换矩阵
+    M, mask = cv2.findHomography(src_points, dst_points, cv2.RANSAC, 3.0)
+
+    # 应用透视变换，使用更好的插值和边界处理
+    corrected = cv2.warpPerspective(
+        image, M, (w, h),
+        flags=cv2.INTER_LANCZOS4,
+        borderMode=cv2.BORDER_REFLECT101
+    )
+
+    # 默认进行图像增强
+    if enhance:
+        corrected = _enhance_image(corrected)
+
+    return corrected
+
+
+def _enhance_image(image, sharpness_factor=1.1, contrast_factor=1.05):
+    """
+    内部图像增强函数
+    """
+    # 轻微锐化
+    kernel = np.array([[-0.5, -0.5, -0.5],
+                       [-0.5, 5.0, -0.5],
+                       [-0.5, -0.5, -0.5]]) * sharpness_factor
+
+    sharpened = cv2.filter2D(image, -1, kernel)
+
+    # 对比度增强
+    lab = cv2.cvtColor(sharpened, cv2.COLOR_BGR2LAB)
+    l, a, b = cv2.split(lab)
+
+    # 对亮度通道进行CLAHE
+    clahe = cv2.createCLAHE(clipLimit=1.5, tileGridSize=(8, 8))
+    l = clahe.apply(l)
+
+    lab = cv2.merge([l, a, b])
+    enhanced = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+    return enhanced
+
+
+# 示例使用
+if __name__ == "__main__":
+    # 读取原始图像
+    original_image = cv2.imread("/data3/czh_code/gta/GTA-UAV-LR/drone/images/200_0001_0000006197.png")
+
+    # 假设俯仰角为5度
+    pitch_angle = 5
+
+    # 矫正图像（默认会进行图像增强）
+    corrected_image = correct_tilted_image(original_image, pitch_angle)
+
+    # 保存结果
+    cv2.imwrite("/data3/czh_code/gta/save/corrected_image_enhanced.jpg", corrected_image)
